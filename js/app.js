@@ -107,9 +107,7 @@ const createPost = (post) => {
                   <button class="post__button post__button--align-right" onclick="reportPost(${
 										post.id
 									})">
-                    <i class="fa-solid fa-ban ${
-											isReported(post.id) && 'text-danger'
-										}"></i>
+                    <i class="fa-solid fa-ban ${isReported(post.id)}"></i>
                   </button>
                 </div>
 
@@ -156,20 +154,20 @@ const showPosts = (posts) => {
 };
 
 const displayLikedPosts = () => {
-	document.getElementById('liked').innerHTML = '';
+	document.getElementById('like').innerHTML = '';
 	const likedPosts = getLikedPosts();
 	likedPosts.forEach((post) => {
 		const div = createPost(post);
-		document.getElementById('liked').appendChild(div);
+		document.getElementById('like').appendChild(div);
 	});
 };
 
 const displayReportedPosts = () => {
-	document.getElementById('reported').innerHTML = '';
+	document.getElementById('report').innerHTML = '';
 	const reportedPosts = getReportedPosts();
 	reportedPosts.forEach((post) => {
 		const div = createPost(post);
-		document.getElementById('reported').appendChild(div);
+		document.getElementById('report').appendChild(div);
 	});
 };
 
