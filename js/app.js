@@ -15,6 +15,10 @@ const isLiked = (id) => {
 	return likedPostsId?.length && !!likedPostsId.includes(id);
 };
 
+const isReported = (id) => {
+	return reportedPostsId?.length && !!reportedPostsId.includes(id);
+};
+
 const addToLiked = (id) => {
 	likedPostsId.push(id);
 	showPosts(posts);
@@ -30,7 +34,7 @@ const reportPost = (id) => {
 
 const displayContent = (text) => {
 	return text.length < 30
-		? 'text'
+		? text
 		: text.slice(0, 30) + "<span class='fw-bold'>... read more</span>";
 };
 
@@ -43,19 +47,16 @@ const switchTab = (id) => {
 		document.getElementById('liked').style.display = 'block';
 		document.getElementById('posts').style.display = 'none';
 		document.getElementById('reported').style.display = 'none';
-
 		displayLikedPosts();
 	} else {
 		document.getElementById('reported').style.display = 'block';
 		document.getElementById('posts').style.display = 'none';
 		document.getElementById('liked').style.display = 'none';
-
 		displayReportedPosts();
 	}
 };
 
 const createPost = (post) => {
-	console.log(post);
 	const image = post.image;
 	const profilePic = post.userImage;
 	const div = document.createElement('article');
@@ -106,7 +107,9 @@ const createPost = (post) => {
                   <button class="post__button post__button--align-right" onclick="reportPost(${
 										post.id
 									})">
-                    <i class="fa-solid fa-ban"></i>
+                    <i class="fa-solid fa-ban ${
+											isReported(post.id) && 'text-danger'
+										}"></i>
                   </button>
                 </div>
 
@@ -130,9 +133,9 @@ const createPost = (post) => {
                   <div class="post__description">
                     <small>
                       <a class="post__name--underline" href="#">
-                          ${post.comments?.user}
+                          ${post?.comments[0]?.user}
                       </a>
-                      ${post.comments?.text}
+                      ${post?.comments[0]?.text}
                     </small>
                   </div>
                   <span class="post__date-time">30 minutes ago</span>
@@ -162,7 +165,7 @@ const displayLikedPosts = () => {
 
 const displayReportedPosts = () => {
 	const reportedPosts = getReportedPosts();
-	posts.forEach((post) => {
+	reportedPosts.forEach((post) => {
 		const div = createPost(post);
 		document.getElementById('reported').appendChild(div);
 	});
